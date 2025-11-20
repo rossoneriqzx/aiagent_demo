@@ -1,0 +1,50 @@
+name: "investment_agent_demo"
+version: "1.0.0"
+environment: "development"
+
+model:
+  provider: "qwen"
+  model_name: "qwen-turbo"
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  temperature: 0.3
+  max_tokens: 1024
+  timeout: 60
+
+system_prompt: >
+  你是一个专业的投资顾问助手，回答要简洁、专业，必要时解释推理过程。
+
+knowledge_base:
+  enabled: true
+  storage_type: "chromadb"
+  storage_path: "./knowledge_base_data"
+  collection_name: "test_kb"
+  embedding:
+    provider: "qwen"
+    model_name: "text-embedding-v1"  # 确认这是正确的模型名
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    timeout: 120  # 增加到120秒
+    max_retries: 3
+  top_k: 5
+  similarity_threshold: 0.6
+
+monitoring:
+  enabled: true
+
+security:
+  enabled: true
+
+cache:
+  enabled: false
+
+use_mcp: true
+mcp_servers:
+  - label: "demo"
+    url: "http://127.0.0.1:8000"
+    enabled: true
+    timeout: 30
+    retry_attempts: 3
+    auth_token: null
+tools_enabled: true
+streaming_enabled: false
+memory_enabled: true
+memory_window: 5
